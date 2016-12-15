@@ -7,6 +7,30 @@ function run(args) {
   }
 }
 
+const ui = () => {
+  ObjC.import('Cocoa');
+  ObjC.registerSubclass({
+    name: 'MenuAction',
+    methods: {
+      'quit': {
+        types: ['void', ['id']],
+        implementation: (sender) => $.NSApp.terminate(this),
+      },
+    },
+  });
+  const menu = $.NSMenu.alloc.init;
+  const menuActionQuit = $.MenuAction.alloc.init;
+  const menuItemQuit = $.NSMenuItem.alloc.init;
+  const statusBar = $.NSStatusBar.systemStatusBar;
+  const statusItem = statusBar.statusItemWithLength($.NSVariableStatusItemLength);
+  menuItemQuit.title = 'Quit';
+  menuItemQuit.target = menuActionQuit;
+  menuItemQuit.action = 'quit';
+  menu.addItem(menuItemQuit);
+  statusItem.title = 'F';
+  statusItem.menu = menu;
+}
+
 const restrictChromeIncognitoWhenRunning = () => {
   const appName = 'Google Chrome';
   if (!isAppRunning(appName)) {
@@ -71,5 +95,4 @@ const closeWindow = (window) =>
 
 const zip = (a, b) => a.map((x, i) => [x, b[i]]);
 
-const flatten1 = (nestedArray) =>
-  Array.prototype.concat.apply([], nestedArray);
+const flatten1 = (nestedArray) => [].concat(...nestedArray);
