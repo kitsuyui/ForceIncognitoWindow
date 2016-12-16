@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
+set -euo pipefail
 builddir='build'
 name='ForceIncognitoWindow'
 app="$name.app"
 src="$name.js"
+ui="ui.js"
 
-additional_script() {
-  cat <<'EOF'
-ui();
-EOF
-}
-
-additional_script | cat "$src" - > "$builddir/$src"
+cat "$src" "$ui" > "$builddir/$src"
+rm -rf "$builddir/$app"
 osacompile -o "$builddir/$app" -l JavaScript "$builddir/$src"
+plutil -insert LSUIElement -bool YES "$builddir/$app"/Contents/Info.plist
 cd "$builddir"
 zip -r "$app".zip "$app"

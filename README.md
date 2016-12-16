@@ -23,7 +23,7 @@ macOS のアプリケーション形式でも入手することができます�
 
 未署名のアプリケーションですので、右クリックで「開く」を選択しないと起動できません。
 
-[こちらから最新版をダウンロードしてください](https://github.com/kitsuyui/ForceIncognitoWindow/releases/tag/1.0.0)
+[こちらから最新版をダウンロードしてください](https://github.com/kitsuyui/ForceIncognitoWindow/releases/)
 
 ### 自分でアプリケーションをビルドしたい場合
 
