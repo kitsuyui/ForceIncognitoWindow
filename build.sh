@@ -6,6 +6,7 @@ app="$name.app"
 src="$name.js"
 ui="ui.js"
 
+mkdir -p "$builddir"
 cat "$src" "$ui" > "$builddir/$src"
 rm -rf "$builddir/$app"
 osacompile -o "$builddir/$app" -l JavaScript "$builddir/$src"
