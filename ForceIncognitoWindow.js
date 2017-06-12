@@ -21,6 +21,9 @@ const isAppRunning = (appName) =>
 
 const restrictChromeIncognito = (chrome) => {
   const urls = pickUpReopenUrls(chrome);
+  if (urls.some(isChromeURL)) {
+    return;
+  }
   closeAllNormalWindows(chrome);
   const incognitoWindow = getOrCreateIncognitoWindow(chrome);
   openUrls(chrome, incognitoWindow, urls);
@@ -31,7 +34,7 @@ const pickUpReopenUrls = (chrome) => {
   const tabsUrls = chrome.windows.tabs.url();
   const reopenTabsUrls = zip(modes, tabsUrls)
                        .filter(([mode, _]) => mode !== 'incognito')
-                       .map(([_, urls]) => urls.filter(isNeededURL));
+                       .map(([_, urls]) => urls);
   return flatten1(reopenTabsUrls);
 };
 
@@ -54,8 +57,7 @@ const indexOfIncognitoWindow = (chrome) =>
 const makeNewIncognitoWindow = (chrome) =>
   chrome.Window({mode: 'incognito'}).make();
 
-const isNeededURL = (url) =>
-  !/^chrome:/.test(url); // chrome:// 系は不要
+const isChromeURL = (url) => /^chrome:/.test(url)
 
 const openUrls = (chrome, window, urls) =>
   urls.forEach(openUrl.bind(null, chrome, window));
